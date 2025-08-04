@@ -1,0 +1,68 @@
+<div class="flex  justify-between items-center p-4 bg-gray-100 rounded-xl border-2 border-gray-300 overflow-hidden">
+    {% if casillero.casillero.estado == 'ocupado' %}
+    <div class="flex flex-col gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" viewBox="0 0 24 24">
+            <path fill="red"
+                d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4" />
+        </svg>
+        <div class="flex gap-1 justify-center items-center">
+            <div class="flex gap-1 justify-center items-center">
+                <strong class="text-md font-bold">M:</strong>
+                {% if casillero.cliente.membresia %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="teal" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="gray"
+                        d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z" />
+                </svg>
+                {% endif %}
+
+            </div>
+            <div class="flex gap-1 justify-center items-center">
+                <strong class="text-md font-bold">S:</strong>
+                {% if casillero.cliente.membresia.suscripcion %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="teal" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="gray"
+                        d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z" />
+                </svg>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+        <path fill="teal"
+            d="M6 22q-.825 0-1.412-.587T4 20V10q0-.825.588-1.412T6 8h1V6q0-2.075 1.463-3.537T12 1t3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.587 1.413T18 22zm6-5q.825 0 1.413-.587T14 15t-.587-1.412T12 13t-1.412.588T10 15t.588 1.413T12 17M9 8h6V6q0-1.25-.875-2.125T12 3t-2.125.875T9 6z" />
+    </svg>
+    {% endif %}
+    <div class="flex flex-col gap-2 text-center">
+        <p class="text-3xl font-bold text-gray-900 truncate dark:text-white">Nº{{ casillero.casillero.numero }}</p>
+        {% if casillero.casillero.estado == 'libre' %}
+        <div class="flex justify-center items-center font-bold text-white bg-teal-500 p-2 rounded-full text-xs"></div>
+        {% endif %}
+        {% if casillero.casillero.estado == 'ocupado' %}
+        <div class="flex justify-center items-center font-bold text-white bg-red-500 p-2 rounded-full text-xs"></div>
+        {% endif %}
+    </div>
+    <div class=" flex flex-col gap-2 py-1 justify-end items-center">
+        {% if casillero.casillero.estado == 'libre' %}
+        {% include 'componentes/botones/btn_registrar_casillero_cliente.html' %}
+        {% endif %}
+        {% if casillero.casillero.estado == 'ocupado' %}
+        {% include 'componentes/botones/btn_editar_casillero_registro.html' %}
+        {% endif %}
+
+        {% if user.rol == 'ADMINISTRADOR' %}
+        {% include 'admin/casilleros/btn_eliminar_registro.html' with casillero=casillero.casillero %}
+        {% endif %}
+
+    </div>
+</div>

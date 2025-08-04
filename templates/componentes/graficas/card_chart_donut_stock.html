@@ -1,0 +1,66 @@
+{% load static %}
+
+<!-- Componente de la gráfica -->
+<div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between mb-3">
+        <div class="flex justify-center items-center">
+            <div>
+                <h5 class="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">Productos por Categoría</h5>
+                <p class="text-base font-normal text-gray-500 dark:text-gray-400">Distribución de productos registrados por categoría</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6" id="donut-chart-productos-categorias"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const data = JSON.parse('{{ chart_categorias_ar_json|safe }}');
+
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        const randomColors = Array.from({ length: data.labels.length }, getRandomColor);
+
+        const chartOptions = {
+            series: data.series,
+            colors: randomColors,
+            chart: {
+                height: 320,
+                type: "donut",
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: "Total",
+                                formatter: function (w) {
+                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            labels: data.labels,
+            legend: {
+                position: "bottom",
+            },
+        };
+
+        const chart = new ApexCharts(document.getElementById("donut-chart-productos-categorias"), chartOptions);
+        chart.render();
+    });
+</script>

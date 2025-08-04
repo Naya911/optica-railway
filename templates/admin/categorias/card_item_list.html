@@ -1,0 +1,32 @@
+{% load static %}
+<div class="flex w-full p-2 bg-white my-1 rounded-lg">
+    <div class="flex flex-col lg:flex-row w-full justify-between items-center">
+        <div class="flex w-full lg:w-auto justify-start p-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="text-purple-500" viewBox="0 0 20 20"><path fill="currentColor" d="M5 7h13v10H2V4h7l2 2H4v9h1z"/></svg>
+        </div>
+        <div class="flex flex-col w-full justify-start items-start px-3">
+            <p class="text-sm font-bold text-gray-700 truncate dark:text-white uppercase">
+                {{ categoria.nombre }}
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ categoria.descripcion }}
+            </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:gap-3 w-full justify-center items-center py-3">
+  
+            <div class="flex flex-col gap-1 px-3 py-2 text-gray-500 w-full" style="font-size: 10px;">
+                <strong>Creado:</strong> {{ categoria.fecha_registro|date:"d M Y H:i" }}
+            </div>
+            <div class="flex flex-col gap-1 px-3 py-2 text-gray-500 w-full" style="font-size: 10px;">
+                <strong>Actualizado:</strong> {{ categoria.fecha_actualizacion|date:"d M Y H:i" }}
+            </div>
+
+            <div class="flex items-center w-full justify-end ">
+                 {% if user.rol == 'Administrador' %}
+                {% include 'admin/categorias/btn_eliminar_registro.html' with categoria=categoria %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

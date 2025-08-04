@@ -1,0 +1,51 @@
+{% load static %}
+<div class="flex w-full p-2 bg-white my-1 rounded-lg">
+    <div class="flex flex-col lg:flex-row w-full justify-between items-center">
+        <!-- Icono según tipo -->
+        <div class="flex w-full lg:w-auto justify-start p-3">
+            {% if contenido.tipo_contenido == 'modelo3d' %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="text-blue-500" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 7.6L3.24 7 12 3.4 20.76 7 12 9.6zM3 9.86V17h2v-5.14L12 15l7-3.14V17h2V9.86L12 14 3 9.86z"/>
+            </svg>
+            {% elif contenido.tipo_contenido == 'video' %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="text-red-500" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M10 16.5l6-4.5l-6-4.5v9zM21 3H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H3V5h18z"/>
+            </svg>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-col w-full justify-start items-start px-3">
+            <p class="text-sm font-bold text-gray-700 truncate dark:text-white uppercase">
+                {{ contenido.lugar.nombre }}
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ contenido.descripcion}}
+            </p>
+            <p class="text-xs text-blue-600 mt-1">
+                <strong>Tipo:</strong> {{ contenido.tipo_contenido }}
+            </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:gap-3 w-full justify-between items-start lg:items-center py-3">
+       
+            <div class="flex flex-col gap-1 px-3 py-2 text-gray-500 w-full" style="font-size: 10px;">
+                <strong>Creado:</strong> {{ contenido.fecha_registro|date:"d M Y H:i" }}
+            </div>
+             <div class="flex flex-col gap-1 px-3 py-2 text-gray-500 w-full" style="font-size: 10px;">
+                <strong>Actualizado:</strong> {{ contenido.fecha_actualizacion|date:"d M Y H:i" }}
+            </div>
+
+            <div class="flex items-center justify-end w-full gap-2 px-2">
+                {% if contenido.archivo %}
+                <a href="{{ contenido.archivo }}" target="_blank"
+                   class="text-xs px-3 py-1 bg-blue-100 text-blue-700 font-semibold rounded-lg hover:bg-blue-200">
+                    Ver Archivo
+                </a>
+                {% endif %}
+                {% if user.rol == 'Administrador' %}
+                    {% include 'admin/contenidos/btn_eliminar_registro.html' with contenido=contenido %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

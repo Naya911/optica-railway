@@ -1,0 +1,53 @@
+{% load static %}
+<div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between pb-4 mb-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center">
+            <div>
+                <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Productos Nuevos</h5>
+                <p class="text-base font-normal text-gray-500 dark:text-gray-400">Registrados en los últimos 30 días</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="column-chart-nuevos-productos"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chartData = JSON.parse('{{ chart_nuevos_productos_json|escapejs }}');
+
+        const options = {
+            series: [{
+                name: 'Productos Nuevos',
+                data: chartData.series,
+            }],
+            chart: {
+                type: 'bar',
+                height: 320,
+                width: '100%',
+                fontFamily: 'Inter, sans-serif',
+                toolbar: { show: false },
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '70%',
+                    borderRadius: 6,
+                },
+            },
+            xaxis: {
+                categories: chartData.labels,
+                labels: { rotate: -45 }
+            },
+            yaxis: {
+                show: true,
+            },
+            colors: ['#10B981'],  // verde esmeralda
+        };
+
+        const chart = new ApexCharts(document.getElementById('column-chart-nuevos-productos'), options);
+        chart.render();
+    });
+</script>

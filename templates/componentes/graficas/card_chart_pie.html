@@ -1,0 +1,86 @@
+<div class="flex flex-col w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between items-start w-full">
+        <div class="flex-col items-center">
+            <div class="flex items-center mb-1">
+                <div>
+                    <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Lugares con y sin
+                        Contenidos</h5>
+                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Segmentación según contenido</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6" id="pie-chart-segmentacion"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const getChartOptionsSegmentacion = () => {
+            // Obtén los datos de segmentación desde Django
+            const chartData = JSON.parse('{{ chart_data_segmentacion_json|safe }}');
+
+            return {
+                series: chartData.cantidad,  // Utiliza la cantidad de clientes con y sin restricciones
+                colors: ["#1C64F2", "#16BDCA"], // Colores para con y sin restricciones
+                chart: {
+                    height: 320,
+                    width: "100%",
+                    type: "pie",
+                },
+                stroke: {
+                    colors: ["white"],
+                },
+                plotOptions: {
+                    pie: {
+                        labels: {
+                            show: true,
+                        },
+                        size: "100%",
+                        dataLabels: {
+                            offset: -25
+                        }
+                    },
+                },
+                labels: chartData.categorias, // Utiliza las categorías de clientes
+                dataLabels: {
+                    enabled: true,
+                    formatter(val, opts) {
+                        const name = opts.w.globals.labels[opts.seriesIndex];
+                        return `${val.toFixed(1)}%`;
+                    },
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                    },
+                },
+                legend: {
+                    position: "bottom",
+                    fontFamily: "Inter, sans-serif",
+                },
+                yaxis: {
+                    labels: {
+                        formatter(val) {
+                            return val + "%";
+                        },
+                    },
+                },
+                xaxis: {
+                    labels: {
+                        formatter(val) {
+                            return val + "%";
+                        },
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                    axisBorder: {
+                        show: false,
+                    },
+                },
+            };
+        };
+
+        const chart = new ApexCharts(document.querySelector("#pie-chart-segmentacion"), getChartOptionsSegmentacion());
+        chart.render();
+    });
+</script>

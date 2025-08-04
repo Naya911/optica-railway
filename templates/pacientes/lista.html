@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-2xl font-bold mb-4">Pacientes</h1>
+    <a href="{% url 'crear_paciente' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Nuevo Paciente</a>
+    <table class="min-w-full mt-4 bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-200 text-gray-600">
+            <tr>
+                <th class="py-2 px-4 text-left">Nombre</th>
+                <th class="py-2 px-4 text-left">Cédula</th>
+                <th class="py-2 px-4 text-left">Teléfono</th>
+                <th class="py-2 px-4 text-left">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in pacientes %}
+            <tr class="border-b hover:bg-gray-100">
+                <td class="py-2 px-4">{{ paciente.nombres }} {{ paciente.apellidos }}</td>
+                <td class="py-2 px-4">{{ paciente.cedula }}</td>
+                <td class="py-2 px-4">{{ paciente.telefono }}</td>
+                <td class="py-2 px-4">
+                    <a href="{% url 'editar_paciente' paciente.pk %}" class="text-blue-500 hover:underline">Editar</a> |
+                    <a href="{% url 'eliminar_paciente' paciente.pk %}" class="text-red-500 hover:underline">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="text-center py-4">No hay pacientes registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

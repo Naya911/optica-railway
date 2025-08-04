@@ -1,0 +1,129 @@
+{% load compress %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg+xml" href="{% static 'src/img/logo.jpg' %}" />
+    <title>Opticas Gloria</title>
+    {% block styles %}{% endblock %}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+</head>
+<body class="bg-purple-50">
+    <nav class="fixed top-0 z-50 w-full bg-gradient-to-br from-purple-200 via-purple-100 to-white">
+        <div class="px-5 py-3 lg:px-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start rtl:justify-end">
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+                        aria-controls="logo-sidebar" type="button"
+                        class="inline-flex items-center p-2 text-sm mr-1 text-purple-200 rounded-xl sm:hidden hover:bg-purple-600">
+                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" fill-rule="evenodd"
+                                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-200 to-emerald-100 rounded-full flex items-center justify-center">
+                        <img src="{% static 'src/img/logo.jpg' %}" class="w-20" alt="">
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
+                        Optica's Gloria
+                    </span>
+                </div>
+                </div>
+                <div class="flex items-center justify-center">
+                    {% if user.rol == 'Administrador' %}
+                    <span class="bg-purple-600 text-purple-200 text-xs font-medium me-2 px-2.5 py-0.5 rounded ">ADMINISTRADOR</span>
+                    {% endif %}
+                    <div class="flex items-center ms-3">
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button
+                                class="text-purple-500 flex justify-center items-center hover:opacity-80 font-sans font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="purple"
+                                        d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h7v2zm11-4l-1.375-1.45l2.55-2.55H9v-2h8.175l-2.55-2.55L16 7l5 5z">
+                                    </path>
+                                </svg>
+                                <div class="hidden lg:flex">Cerrar sesión</div>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-100 sm:translate-x-0 "
+        aria-label="Sidebar">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+            <ul class="space-y-2 font-medium">
+                {% if user.rol == 'Administrador' %}
+                <li>
+                    <a href="{% url 'productos' %}" class="flex items-center p-2 
+                           {% if request.path == '/panel/productos/' %} bg-purple-100 text-purple-600 
+                           {% else %} text-gray-500 hover:bg-gray-100 {% endif %} 
+                           rounded-lg dark:text-white dark:hover:bg-gray-700 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M6.237 4.712a.75.75 0 0 0-.474-1.423l-.555.185c-.57.19-1.055.351-1.439.527c-.409.187-.767.416-1.051.776c-.285.36-.426.76-.515 1.2c-.083.415-.129.923-.183 1.522l-.698 7.67a5 5 0 0 0-.072.823C1.255 18.611 3.38 20.75 6 20.75a4.75 4.75 0 0 0 4.689-3.986l.219-.078a3.25 3.25 0 0 1 2.184 0l.22.078A4.75 4.75 0 0 0 18 20.75c2.62 0 4.744-2.14 4.75-4.758q0-.421-.073-.823L21.98 7.5c-.054-.6-.1-1.107-.183-1.521c-.089-.441-.23-.842-.515-1.201s-.642-.59-1.051-.776c-.384-.176-.868-.337-1.439-.527l-.555-.185a.75.75 0 0 0-.474 1.423l.518.172c.617.206 1.024.343 1.326.481c.286.13.414.235.5.343c.085.107.157.256.219.564c.065.326.105.753.164 1.401l.415 4.569a4.75 4.75 0 0 0-7.585 2.942a4.75 4.75 0 0 0-2.64 0a4.75 4.75 0 0 0-7.585-2.942l.048-.532l.367-4.037c.059-.648.099-1.075.164-1.4c.062-.309.134-.458.22-.565c.085-.108.213-.212.499-.343c.302-.138.709-.275 1.326-.48z" clip-rule="evenodd"/></svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Productos en lentes</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'categorias' %}" class="flex items-center p-2 
+                           {% if request.path == '/panel/categorias/' %} bg-purple-100 text-purple-600 
+                           {% else %} text-gray-500 hover:bg-gray-100 {% endif %} 
+                           rounded-lg dark:text-white dark:hover:bg-gray-700 group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32"><path fill="currentColor" d="m6.76 6l.45.89L7.76 8H12v5H4V6zm.62-2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9l-.72-1.45a1 1 0 0 0-.9-.55m15.38 2l.45.89l.55 1.11H28v5h-8V6zm.62-2H19a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-4l-.72-1.45a1 1 0 0 0-.9-.55M6.76 19l.45.89l.55 1.11H12v5H4v-7zm.62-2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1H9l-.72-1.45a1 1 0 0 0-.9-.55m15.38 2l.45.89l.55 1.11H28v5h-8v-7zm.62-2H19a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-4l-.72-1.45a1 1 0 0 0-.9-.55"/></svg>                        
+                            <span class="flex-1 ms-3 whitespace-nowrap">Categorias</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'usuarios' %}" class="flex items-center p-2 
+                                               {% if request.path == '/panel/usuarios/' %} bg-purple-100 text-purple-600 
+                                               {% else %} text-gray-500 hover:bg-gray-100 {% endif %} 
+                                               rounded-lg dark:text-white dark:hover:bg-gray-700 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <circle cx="9.001" cy="6" r="4" fill="currentColor"></circle>
+                            <ellipse cx="9.001" cy="17.001" fill="currentColor" rx="7" ry="4"></ellipse>
+                            <path fill="currentColor"
+                                d="M21 17c0 1.657-2.036 3-4.521 3c.732-.8 1.236-1.805 1.236-2.998c0-1.195-.505-2.2-1.239-3.001C18.962 14 21 15.344 21 17M18 6a3 3 0 0 1-4.029 2.82A5.688 5.688 0 0 0 14.714 6c0-1.025-.27-1.987-.742-2.819A3 3 0 0 1 18 6.001">
+                            </path>
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'reportes' %}" class="flex items-center p-2 
+                                                               {% if request.path == '/panel/reportes/' %} bg-purple-100 text-purple-600 
+                                                               {% else %} text-gray-500 hover:bg-gray-100 {% endif %} 
+                                                               rounded-lg dark:text-white dark:hover:bg-gray-700 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1m0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1m10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1M13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1">
+                            </path>
+                        </svg>
+                        <span class="ms-3">Reportes</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </aside>
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 purple-2 border-purple-100 border-dashed rounded-lg  mt-14">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

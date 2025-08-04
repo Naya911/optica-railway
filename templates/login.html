@@ -1,0 +1,34 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-blue-100">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-200 to-emerald-100 rounded-full flex items-center justify-center">
+                        <img src="{% static 'src/img/logo.jpg' %}" class="w-20" alt="">
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
+                        Optica's Gloria
+                    </span>
+                </div>
+
+
+                <!-- Botón AR y Menú Mobile -->
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'inicio' %}" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg px-4 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="arButtonText">Inicio</span>
+                    </a>
+                </div>
+            </div>
+
+          
+        </div>
+    </header>
+<div class="flex w-full h-[70vh] justify-center items-center">
+    {% include 'componentes/form_login.html' %}
+</div>
+
+
+{% endblock content %}

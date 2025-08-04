@@ -1,0 +1,59 @@
+{% load static %}
+<div class="flex  w-full p-2 bg-white my-1  rounded-lg ">
+    <div class="flex flex-col lg:flex-row w-full justify-between items-center">
+        <div class="flex w-full lg:w-auto justify-start p-3">
+            {% if producto.cover %}
+            <img src="{{ producto.cover }}" alt="Portada del producto" class="w-30 object-cover rounded-md">
+            {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="text-purple-500" viewBox="0 0 24 24"><path fill="currentColor" d="M8 3a1 1 0 1 1 0 2H6.743l-2.24 7.467A4.5 4.5 0 0 1 10.743 15h2.513a4.502 4.502 0 0 1 6.241-2.534L17.256 5H16a1 1 0 0 1-.993-.883L15 4a1 1 0 0 1 1-1h2a1 1 0 0 1 .958.713l3 10A1 1 0 0 1 22 14v2.5a4.5 4.5 0 0 1-8.972.5h-2.056A4.5 4.5 0 0 1 2 16.5V14a1 1 0 0 1 .042-.287l3-10A1 1 0 0 1 6 3z"/></svg>
+            {% endif %}
+        </div>
+        <div class="flex flex-col w-full justify-start items-start px-3">
+            <p class="text-sm font-bold text-gray-700 truncate dark:text-white uppercase">
+                {{ producto.nombre }}
+            </p>
+            <p class="flex flex-col gap-1 text-xs text-gray-500 truncate dark:text-gray-400">
+                <div class="flex gap-2 text-xs text-gray-500"><strong>CATEGORIA:</strong>
+                    {{ producto.categoria }}</div>
+                <div class="flex gap-2 text-xs text-gray-500"><strong>PRECIO:</strong>
+                    {{ producto.precio }} Bs.</div>
+            </p>
+        </div>
+        <div class="flex gap-2 w-full justify-between items-center ">
+            <div class="flex flex-col lg:flex-row  lg:gap-3 w-full justify-between items-start lg:items-center py-3 ">
+                {% if producto.imagen_lente_ar %}
+               <div class="flex flex-col items-center gap-1 px-3 py-2   text-gray-500 w-full" style="font-size: 10px;">
+                    <strong class="m-0 p-0">Tiene AR:</strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="text-teal-500" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4q3.35 0 5.675 2.325T20 12t-2.325 5.675T12 20t-5.675-2.325T4 12t2.325-5.675T12 4m-3.5 6q0 .425.288.713T9.5 11t.713-.288T10.5 10t-.288-.712T9.5 9t-.712.288T8.5 10m5 0q0 .425.288.713T14.5 11t.713-.288T15.5 10t-.288-.712T14.5 9t-.712.288T13.5 10M1 5V3q0-.825.588-1.412T3 1h2q.425 0 .713.288T6 2t-.288.713T5 3H3v2q0 .425-.288.713T2 6t-.712-.288T1 5m4 18H3q-.825 0-1.412-.587T1 21v-2q0-.425.288-.712T2 18t.713.288T3 19v2h2q.425 0 .713.288T6 22t-.288.713T5 23m16 0h-2q-.425 0-.712-.288T18 22t.288-.712T19 21h2v-2q0-.425.288-.712T22 18t.713.288T23 19v2q0 .825-.587 1.413T21 23m0-18V3h-2q-.425 0-.712-.288T18 2t.288-.712T19 1h2q.825 0 1.413.588T23 3v2q0 .425-.288.713T22 6t-.712-.288T21 5m-9 10.5q.95 0 1.763-.45t1.312-1.225q.15-.275-.012-.55T14.575 13h-5.15q-.325 0-.488.275t-.012.55q.5.775 1.313 1.225T12 15.5"/></svg>
+                </div>
+                {% else %}
+                <div class="flex flex-col items-center gap-1 px-3 py-2   text-gray-500 w-full" style="font-size: 10px;">
+                    <strong class="m-0 p-0">Tiene AR:</strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="text-gray-500" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4q3.35 0 5.675 2.325T20 12t-2.325 5.675T12 20t-5.675-2.325T4 12t2.325-5.675T12 4m-3.5 6q0 .425.288.713T9.5 11t.713-.288T10.5 10t-.288-.712T9.5 9t-.712.288T8.5 10m5 0q0 .425.288.713T14.5 11t.713-.288T15.5 10t-.288-.712T14.5 9t-.712.288T13.5 10M1 5V3q0-.825.588-1.412T3 1h2q.425 0 .713.288T6 2t-.288.713T5 3H3v2q0 .425-.288.713T2 6t-.712-.288T1 5m4 18H3q-.825 0-1.412-.587T1 21v-2q0-.425.288-.712T2 18t.713.288T3 19v2h2q.425 0 .713.288T6 22t-.288.713T5 23m16 0h-2q-.425 0-.712-.288T18 22t.288-.712T19 21h2v-2q0-.425.288-.712T22 18t.713.288T23 19v2q0 .825-.587 1.413T21 23m0-18V3h-2q-.425 0-.712-.288T18 2t.288-.712T19 1h2q.825 0 1.413.588T23 3v2q0 .425-.288.713T22 6t-.712-.288T21 5m-9 10.5q.95 0 1.763-.45t1.312-1.225q.15-.275-.012-.55T14.575 13h-5.15q-.325 0-.488.275t-.012.55q.5.775 1.313 1.225T12 15.5"/></svg>
+                </div>
+                {% endif %}
+                
+                {% if producto.tipo %}
+                <div class="flex  w-full justify-start items-center mx-3">
+                    <div class="flex w-full justify-center gap-2 text-xs bg-purple-100 rounded-full px-3 py-2 font-extrabold text-purple-700">
+                        {{ producto.tipo }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="flex flex-col gap-1 px-3 py-2   text-gray-500 w-full" style="font-size: 10px;">
+                    <strong class="m-0 p-0">Creado:</strong>
+                    {{ producto.fecha_registro }}
+                </div>
+
+            </div>
+            <div class="flex py-1 gap-2  h-full justify-end items-end text-base font-semibold text-gray-900 dark:text-white">
+                {% if user.rol == 'Administrador' %}
+                {% include 'admin/productos/btn_detalle_registro.html' with producto=producto %}
+                {% include 'admin/productos/btn_editar_producto.html' with producto=producto %}
+                {% include 'admin/productos/btn_eliminar_registro.html' with producto=producto %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

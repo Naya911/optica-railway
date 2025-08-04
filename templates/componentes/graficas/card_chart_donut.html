@@ -1,0 +1,66 @@
+{% load static %}
+
+<div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between mb-3">
+        <div class="flex justify-center items-center">
+            <div>
+                <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Productos con y sin AR</h5>
+                <p class="text-base font-normal text-gray-500 dark:text-gray-400">Segmentación de productos con imagen AR</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6" id="donut-chart-segmentacion-ar"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    const chartDataSegmentacionAR = JSON.parse('{{ chart_segmentacion_ar_json|escapejs }}');
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    const randomColors = Array.from({ length: chartDataSegmentacionAR.categorias.length }, getRandomColor);
+
+    const getSegmentacionChartOptions = () => {
+        return {
+            series: chartDataSegmentacionAR.cantidad,
+            colors: randomColors,
+            chart: {
+                height: 320,
+                type: "donut",
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: "Total",
+                                formatter: function () {
+                                    return chartDataSegmentacionAR.cantidad.reduce((a, b) => a + b, 0);
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            labels: chartDataSegmentacionAR.categorias,
+            legend: {
+                position: "bottom",
+            },
+        };
+    };
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const chart = new ApexCharts(document.getElementById("donut-chart-segmentacion-ar"), getSegmentacionChartOptions());
+        chart.render();
+    });
+</script>

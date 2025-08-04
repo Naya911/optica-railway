@@ -1,0 +1,47 @@
+<div class="flex flex-col w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between items-start w-full">
+        <div class="flex-col items-center">
+            <div class="flex items-center mb-1">
+                <div>
+                    <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Productos por Tipo</h5>
+                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Distribución de productos por tipo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="py-6" id="pie-chart-productos-tipo"></div>
+</div>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const data = JSON.parse('{{ chart_tipos_ar_json|escapejs }}');
+        const categorias = data.labels;
+        const cantidades = data.series;
+
+        const colors = ["#1E90FF", "#FF6347", "#3CB371", "#FFA500", "#8A2BE2", "#FF69B4"]; // Puedes ajustar o ampliar
+
+        const getChartOptions = () => {
+            return {
+                series: cantidades,
+                colors: colors.slice(0, categorias.length),
+                chart: {
+                    height: 320,
+                    type: "pie",
+                },
+                labels: categorias,
+                dataLabels: {
+                    enabled: true,
+                    formatter(val) {
+                        return `${val.toFixed(1)}%`;
+                    },
+                },
+                legend: {
+                    position: "bottom",
+                },
+            };
+        };
+
+        const chart = new ApexCharts(document.querySelector("#pie-chart-productos-tipo"), getChartOptions());
+        chart.render();
+    });
+</script>

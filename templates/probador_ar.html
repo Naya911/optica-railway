@@ -1,0 +1,141 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-blue-100">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-200 to-emerald-100 rounded-full flex items-center justify-center">
+                    <img src="{% static 'src/img/logo.jpg' %}" class="w-20" alt="">
+                </div>
+                <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">
+                    Optica's Gloria
+                </span>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'inicio' %}"
+                   class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg px-4 py-2 rounded-md text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="arButtonText">Inicio</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="relative">
+    <video id="input_video" autoplay muted playsinline class="sr-only"></video>
+    <canvas id="output_canvas" class="w-full mt-5 max-w-xl aspect-[4/3] mx-auto rounded-lg shadow-lg"></canvas>
+
+    <div class="flex justify-center mt-4">
+        <button onclick="iniciarCamaraAR()"
+                class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-md">
+            Activar Cámara AR
+        </button>
+    </div>
+
+    <!-- SLIDER DE PRODUCTOS -->
+    <div class="mt-8 px-4 max-w-6xl mx-auto">
+        <h2 class="text-xl font-bold text-center mb-4 text-gray-800">Elige unos lentes para probar</h2>
+        <div id="slider" class="flex overflow-x-auto gap-4 pb-4">
+            {% for producto in productos %}
+            <div class="producto-item min-w-[150px] flex-shrink-0 bg-white rounded-lg shadow hover:shadow-lg transition cursor-pointer border border-gray-200"
+                 data-img="{{ producto.imagen_lente_ar }}">
+                <img src="{{ producto.cover }}" alt="{{ producto.nombre }}"
+                     class="w-full h-32 object-cover rounded-t-lg">
+                <div class="p-2 text-center">
+                    <p class="font-semibold text-sm text-gray-700">{{ producto.nombre }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<style>
+    .selected-product {
+        border: 3px solid #9333ea; /* purple-600 */
+        box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.4);
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const canvasElement = document.getElementById('output_canvas');
+        const canvasCtx = canvasElement?.getContext('2d');
+        const videoElement = document.getElementById('input_video');
+
+        let glassesImg = new Image();
+        glassesImg.src = '{% static "src/img/lentes1.webp" %}'; // Default image
+
+        function drawGlasses(landmarks) {
+            const leftEye = landmarks[33];
+            const rightEye = landmarks[263];
+            const x = (leftEye.x + rightEye.x) / 2 * canvasElement.width;
+            const y = (leftEye.y + rightEye.y) / 2 * canvasElement.height;
+
+            // Ajuste de tamaño: más realista
+            const width = Math.abs(rightEye.x - leftEye.x) * canvasElement.width * 1.6; // antes era *2
+            const height = width * (glassesImg.height / glassesImg.width);
+
+            canvasCtx.drawImage(glassesImg, x - width / 2, y - height / 2, width, height);
+        }
+
+        const faceMesh = new FaceMesh({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+        });
+        faceMesh.setOptions({
+            maxNumFaces: 1,
+            refineLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+        faceMesh.onResults((results) => {
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+            if (results.multiFaceLandmarks.length > 0) {
+                drawGlasses(results.multiFaceLandmarks[0]);
+            }
+        });
+
+        let cameraAR = null;
+
+        window.iniciarCamaraAR = function () {
+            if (!videoElement || !canvasElement) return;
+
+            videoElement.classList.remove('hidden');
+            canvasElement.classList.remove('hidden');
+
+            canvasElement.width = canvasElement.offsetWidth;
+            canvasElement.height = canvasElement.offsetHeight;
+
+            if (!cameraAR) {
+                cameraAR = new Camera(videoElement, {
+                    onFrame: async () => {
+                        await faceMesh.send({ image: videoElement });
+                    },
+                    width: canvasElement.width,
+                    height: canvasElement.height
+                });
+                cameraAR.start();
+            }
+        };
+
+        // Manejar selección visual + cambiar imagen del lente
+        const productos = document.querySelectorAll(".producto-item");
+        productos.forEach(item => {
+            item.addEventListener("click", function () {
+                // Quitar selección anterior
+                productos.forEach(p => p.classList.remove("selected-product"));
+                // Seleccionar actual
+                this.classList.add("selected-product");
+                // Cambiar imagen del lente
+                const nuevaURL = this.getAttribute("data-img");
+                glassesImg.src = nuevaURL;
+            });
+        });
+    });
+</script>
+
+{% endblock content %}

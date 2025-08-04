@@ -1,0 +1,96 @@
+<div class="flex flex-col w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+    <div class="flex justify-between mb-1">
+        <div>
+            <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">Lugares Nuevos</h5>
+            <p class="text-base font-normal text-gray-500 dark:text-gray-400">Lugares registrados en los últimos 30
+                días</p>
+        </div>
+    </div>
+    <div id="chart-container-nuevos-lugares"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const data = JSON.parse('{{ chart_data_nuevos_clientes_json|escapejs }}');  // Usa escapejs para evitar problemas de escape
+
+        const fechas = data.fechas;
+        const nuevosClientes = data.total_nuevos_clientes;
+
+        const options = {
+            series: [
+                {
+                    name: "Lugares Nuevos",
+                    data: nuevosClientes,
+                    color: "#ff5733",
+                }
+            ],
+            chart: {
+                height: 320,
+                maxWidth: "100%",
+                type: "area",
+                fontFamily: "Inter, sans-serif",
+                dropShadow: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false,
+                },
+            },
+            tooltip: {
+                enabled: true,
+                x: {
+                    show: true,
+                },
+                y: {
+                    formatter: function (value) {
+                        return value + ' Lugares';
+                    }
+                },
+            },
+            xaxis: {
+                categories: fechas,  // Usamos las fechas como etiquetas
+                labels: {
+                    rotate: -45,
+                }
+            },
+            yaxis: {
+                show: true,
+                labels: {
+                    formatter: function (value) {
+                        return value;
+                    }
+                }
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    opacityFrom: 0.55,
+                    opacityTo: 0,
+                    shade: "#ff5733",
+                    gradientToColors: ["#ff5733"],
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                width: 6,
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 4,
+                padding: {
+                    left: 2,
+                    right: 2,
+                    top: -26
+                },
+            },
+        };
+
+        const chartContainer = document.getElementById("chart-container-nuevos-lugares");
+        if (chartContainer && typeof ApexCharts !== 'undefined') {
+            const chart = new ApexCharts(chartContainer, options);
+            chart.render();
+        }
+    });
+</script>

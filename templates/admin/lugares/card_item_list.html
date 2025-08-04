@@ -1,0 +1,44 @@
+{% load static %}
+<div class="flex w-full p-2 bg-white my-1 rounded-lg">
+    <div class="flex flex-col lg:flex-row w-full justify-between items-center">
+        <div class="flex w-full lg:w-auto justify-start p-3">
+            <img src="{{lugar.imagen_portada}}" class="w-[30vh] h-auto rounded-md cover" alt="portada-{{lugar.id_lugar_turistico}}">
+        </div>
+
+        <div class="flex flex-col w-full justify-start items-start px-3">
+            <p class="text-sm font-bold text-gray-700 truncate dark:text-white uppercase">
+                {{ lugar.nombre }}
+            </p>
+            <p class="flex flex-col gap-1 text-xs text-gray-500 truncate dark:text-gray-400">
+                <div class="flex gap-2 text-xs text-gray-500"><strong>DESCRIPCIÓN:</strong> {{ lugar.descripcion|truncatechars:100 }}</div>
+                <div class="flex gap-2 text-xs text-gray-500"><strong>CATEGORÍA:</strong> {{ lugar.categoria.nombre }}</div>
+                <div class="flex gap-2 text-xs text-gray-500"><strong>DIRECCIÓN:</strong> {{ lugar.direccion }}</div>
+                <div class="flex gap-2 text-xs text-gray-500"><strong>COORDENADAS:</strong> Lat: {{ lugar.latitud }}, Lng: {{ lugar.longitud }}</div>
+         
+
+            </p>
+        </div>
+
+        <div class="flex gap-2 w-full justify-between items-center">
+            <div class="flex flex-col lg:flex-row lg:gap-3 w-full justify-between items-start lg:items-center py-3">
+                <div class="flex w-full justify-start items-center mx-3">
+                    <div class="flex w-full justify-center gap-2 text-xs rounded-full px-3 py-2 font-extrabold text-white
+                                {% if lugar.activo %} bg-green-700 {% else %} bg-red-700 {% endif %}">
+                        {% if lugar.activo %} Activo {% else %} Inactivo {% endif %}
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1 px-3 py-2 text-gray-500 w-full" style="font-size: 10px;">
+                    <strong class="m-0 p-0">Creado:</strong>
+                    {{ lugar.fecha_creacion }}
+                </div>
+            </div>
+
+            <div class="flex py-1 h-full justify-end items-end text-base font-semibold text-gray-900 dark:text-white">
+                {% if user.rol == 'Administrador' %}
+                    {% include 'admin/lugares/btn_eliminar_registro.html' with lugar=lugar %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+{% extends "admin/_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex flex-wrap gap-6 justify-center mt-4 w-full">
+
+  <div class="flex-1 min-w-[300px] max-w-md min-h-[450px]">
+    {% include 'componentes/graficas/card_chart_pie_alquiler.html' %}
+  </div>
+
+  <div class="flex-1 min-w-[300px] max-w-md min-h-[450px]">
+    {% include 'componentes/graficas/card_chart_donut.html' %}
+  </div>
+
+  <div class="flex-1 min-w-[300px] max-w-md min-h-[450px]">
+    {% include 'componentes/graficas/card_chart_column.html' %}
+  </div>
+
+  <div class="flex-1 min-w-[300px] max-w-md min-h-[450px]">
+    {% include 'componentes/graficas/card_chart_donut_stock.html' %}
+  </div>
+
+</div>
+
+
+
+{% endblock content %}

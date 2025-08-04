@@ -1,0 +1,87 @@
+{% extends "admin/_base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% include 'componentes/banner.html' %}
+
+<form method="GET" class="flex w-full  items-center space-x-2 py-3">
+    <div class="relative w-full">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+        </div>
+        <input type="search" id="default-search" name="q"
+            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Buscar usuarios..." required value="{{ query }}" />
+    </div>
+    <button type="submit"
+        class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2.5">Buscar</button>
+
+    {% if query %}
+
+    <a type="button" href="{% url 'usuarios' %}"
+        class="text-gray-500 bg-white border border-gray-300 rounded-lg  text-sm p-2 ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="gray"
+                d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z" />
+        </svg>
+
+    </a>
+    {% endif %}
+</form>
+
+
+
+<ul class="flex flex-col  w-full justify-center items-center py-1">
+    {% for usuario in pagina_actual %}
+    {% include 'admin/usuarios/card_item_list.html' with usuario=usuario %}
+    {% empty %}
+    <li class="text-gray-500 font-bold py-3">No hay usuarios disponibles.</li>
+    {% endfor %}
+</ul>
+{% if total_registros > 0 %}
+<div class="flex w-full p-3 justify-center items-center">
+    <nav aria-label="Page navigation example">
+        <ul class="inline-flex -space-x-px text-sm">
+            {% if pagina_actual.has_previous %}
+            <li>
+                <a href="?q={{ request.GET.q }}&page={{ pagina_actual.previous_page_number }}"
+                    class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-700 bg-white border border-e-0 border-gray-300 rounded-s-lg">
+                    Anterior
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <span
+                    class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg">Anterior</span>
+            </li>
+            {% endif %}
+
+            <!-- Mostrar número de página actual -->
+            <li>
+                <span class="flex items-center justify-center px-3 h-8 text-gray-500 border border-gray-300">
+                    Página: {{ pagina_actual.number }} </span>
+            </li>
+
+            {% if pagina_actual.has_next %}
+            <li>
+                <a href="?q={{ request.GET.q }}&page={{ pagina_actual.next_page_number }}"
+                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-700 bg-white border border-gray-300 rounded-e-lg">
+                    Siguiente
+                </a>
+            </li>
+            {% else %}
+            <li>
+                <span
+                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg">Siguiente</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+{% endblock content %}

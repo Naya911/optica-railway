@@ -1,0 +1,99 @@
+{% load compress %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpg+xml" href="{% static 'src/img/logo.jpg' %}" />
+    <title>Opticas Gloria</title>
+    
+
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <main>    
+        {% block content %}
+        {% endblock content %}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script>
+        const state = {
+            menuAbierto: false,
+            camaraAR: false,
+            categoriaFiltro: "Todos",
+            lenteSeleccionado: null,
+            productos: [
+                {
+                    id: 1,
+                    nombre: "Ray-Ban Aviator Classic",
+                    precio: "$299",
+                    categoria: "Sol",
+                    imagen: "https://via.placeholder.com/300x300",
+                    rating: 4.8,
+                    descripcion: "Lentes de sol clásicos con protección UV400",
+                    arCompatible: true,
+                },
+                {
+                    id: 2,
+                    nombre: "Oakley Holbrook",
+                    precio: "$189",
+                    categoria: "Deportivos",
+                    imagen: "https://via.placeholder.com/300x300",
+                    rating: 4.7,
+                    descripcion: "Perfectos para actividades deportivas",
+                    arCompatible: true,
+                },
+                {
+                    id: 3,
+                    nombre: "Persol PO3019S",
+                    precio: "$425",
+                    categoria: "Premium",
+                    imagen: "https://via.placeholder.com/300x300",
+                    rating: 4.9,
+                    descripcion: "Elegancia italiana en cada detalle",
+                    arCompatible: true,
+                },
+                {
+                    id: 4,
+                    nombre: "Tom Ford FT5401",
+                    precio: "$380",
+                    categoria: "Graduados",
+                    imagen: "https://via.placeholder.com/300x300",
+                    rating: 4.6,
+                    descripcion: "Montura para lentes graduados de lujo",
+                    arCompatible: true,
+                },
+                {
+                    id: 5,
+                    nombre: "Maui Jim Peahi",
+                    precio: "$329",
+                    categoria: "Sol",
+                    imagen: "https://via.placeholder.com/300x300",
+                    rating: 4.8,
+                    descripcion: "Tecnología PolarizedPlus2®",
+                    arCompatible: true,
+                },
+                {
+                    id: 6,
+                    nombre: "Warby Parker Felix",
+                    precio: "$145",
+                    categoria: "Graduados",
+                    imagen: "https://via.placeholder.com/300x300",
+                    rating: 4.5,
+                    descripcion: "Estilo moderno y accesible",
+                    arCompatible: true,
+                },
+            ],
+            categorias: ["Todos", "Sol", "Graduados", "Deportivos", "Premium"]
+        };
+
+      
+      
+    </script>
+</body>
+</html>
